@@ -1,6 +1,11 @@
+# /usr/local/bin/python3.12 -m pip install
 from getdomain import get_domain
 from remhtttp import remove_protocol
 import tldextract
+import requests
+import whois
+import pythonwhois
+from datetime import datetime
 
 
 def check_url_length(url):
@@ -66,3 +71,61 @@ def check_having_sub_domain(url):
             return -1  # Indicates no subdomain
     except:
         return 0  # Error or invalid URL
+
+
+def check_ssl_final_state(url):
+    try:
+        # Send a HEAD request to the URL to get SSL certificate information
+        response = requests.head(url, verify=True)
+
+        # Check if the response has a valid SSL certificate
+        if response.ok:
+            return 1  # Indicates a valid SSL certificate
+        else:
+            return -1  # Indicates an invalid SSL certificate
+    except:
+        return 0  # Error or invalid URL
+
+
+def check_domain_registration_length(url):
+    try:
+        # Extract the domain from the URL
+        domain = get_domain(url)
+
+        print(domain)
+
+        # Get WHOIS information for the domain
+        details = pythonwhois.get_whois(domain)
+
+        print(details)
+
+        return 1
+
+        # # Check if WHOIS information contains creation date
+        # if 'creation_date' in domain_info:
+        #     creation_date = domain_info['creation_date']
+        #     print(creation_date)
+
+        #     # Calculate the registration length in days
+        #     if isinstance(creation_date, list):
+        #         creation_date = creation_date[0]
+        #     registration_length = (creation_date - datetime.now()).days
+
+        #     print(registration_length)
+
+        #     # Check if registration length is greater than a threshold (e.g., 365 days)
+        #     if registration_length > 365:
+        #         return 1  # Indicates a domain registered for a longer period
+        #     else:
+        #         return -1  # Indicates a domain registered for a shorter period
+        # else:
+        #     return 0  # WHOIS information does not contain creation date
+    except:
+        return 0  # Error or invalid URL
+
+
+# Example usage:
+url = "https://thintry.com"
+result = check_domain_registration_length(url)
+
+print(f"The Domain_registeration_length feature for {url} is: {result}")
