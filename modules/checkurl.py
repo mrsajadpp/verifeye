@@ -87,8 +87,10 @@ def check_ssl_final_state(url):
         return 0  # Error or invalid URL
 
 
+# Coding loading .........................
+
 def check_domain_registration_length(url):
-    try:
+    # try:
         # Extract the domain from the URL
         domain = get_domain(url)
 
@@ -120,8 +122,8 @@ def check_domain_registration_length(url):
         #         return -1  # Indicates a domain registered for a shorter period
         # else:
         #     return 0  # WHOIS information does not contain creation date
-    except:
-        return 0  # Error or invalid URL
+    # except:
+    #     return 0  # Error or invalid URL
 
 
 # Example usage:
