@@ -1,6 +1,6 @@
 # VerifEye: Phishing Link Detector AI Language Model
 
-![VerifEye Logo](link_to_your_logo_or_image)
+![VerifEye Logo](https://i.postimg.cc/yN2gZ5ZX/verifeye-logo.png)
 
 VerifEye is a powerful AI language model designed to detect phishing links. It utilizes machine learning techniques to analyze and classify URLs, helping users identify potentially malicious websites.
 
