@@ -32,21 +32,6 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-### Usage
-
-```python
-# Example code for using VerifEye to detect phishing links
-from verifeye import PhishingDetector
-
-detector = PhishingDetector()
-result = detector.detect("https://example-phishing-link.com")
-
-if result:
-    print("Phishing link detected!")
-else:
-    print("The link seems safe.")
-```
-
 Refer to the [documentation](https://github.com/mrsajadpp/verifeye/blob/main/docs) for detailed usage instructions and customization options.
 
 ## Contributing
