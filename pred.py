@@ -3,7 +3,7 @@ import numpy as np
 import joblib
 
 # Load the trained model
-model_filename = './trained_model.joblib'
+model_filename = 'model/trained_model.joblib'
 model = joblib.load(model_filename)
 
 # Prepare input data for prediction (exclude the "Index" column)

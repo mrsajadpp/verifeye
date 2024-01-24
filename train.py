@@ -28,7 +28,7 @@ model = DecisionTreeClassifier()
 model.fit(Xtrain, ytrain)
 
 # Save the trained model using joblib
-model_filename = './trained_model.joblib'
+model_filename = 'model/trained_model.joblib'
 joblib.dump(model, model_filename)
 print(f"Trained model saved to {model_filename}")
 
