@@ -12,7 +12,7 @@ import seaborn as sns
 from sklearn.tree import export_graphviz
 import joblib
 
-df = pd.read_csv('./dataset.csv')
+df = pd.read_csv('data/dataset.csv')
 dot_file = './tree.dot'
 confusion_matrix_file = './confusion_matrix.png'
 
@@ -48,7 +48,7 @@ plt.savefig(confusion_matrix_file)
 export_graphviz(model, out_file=dot_file, feature_names=X.columns.values)
 
 # load the saved model
-reg = joblib.load('./trained_model.joblib')
+reg = joblib.load('model/trained_model.joblib')
 
 predictions = reg.predict(Xtest)
 print(predictions)
