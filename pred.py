@@ -37,7 +37,7 @@ new_data_values = np.array([
 # Prefix_Suffix  { -1,1 }
 # having_Sub_Domain  { -1,0,1 }
 # SSLfinal_State  { -1,1,0 }
-# Domain_registeration_length { -1,1 }
+# Domain_registeration_length { -1,1 } ///////////
 # Favicon { 1,-1 }
 # port { 1,-1 }
 # HTTPS_token { -1,1 }
