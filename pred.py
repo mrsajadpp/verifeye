@@ -1,15 +1,31 @@
 # Import necessary libraries
 import numpy as np
 import joblib
+from modules.ipcheck import check_having_IP_Address
+from modules.checkurl import check_url_length, check_shortening_service, check_having_at_symbol, check_double_slash_redirecting, check_having_sub_domain, check_ssl_final_state
+from urllib.parse import urlparse
 
 # Load the trained model
 model_filename = 'model/trained_model.joblib'
 model = joblib.load(model_filename)
 
+def get_domain(url):
+    parsed_url = urlparse(url)
+    return parsed_url.netloc
+
+url = 'https://thintry.com/'
+domain = check_having_IP_Address(get_domain(url))
+length = check_url_length(url)
+is_shorted = check_shortening_service(url)
+having_at_symbol = check_having_at_symbol(url)
+double_slash_redirecting = check_double_slash_redirecting(url)
+having_sub_domain = check_having_sub_domain(url)
+ssl_final_state = check_ssl_final_state(url)
+
+
 # Prepare input data for prediction (exclude the "Index" column)
 new_data_values = np.array([
-    [1, 0, 1, 1, 1, -1, 0, 1, -1, 1, 1, -1, 1, 0, -1, -1, 1, 1, 0, 1, 1, 1, 1, -1, -1, 0, -1, 1, 1, 1, -1],
-    [1, 1, 1, -1, -1, 1, 1, 0, 1, -1, -1, 1, -1, 1, 1, 0, 1, 1, -1, 0, -1, 1, 1, 1, 1, -1, 1, 0, -1, 1, 0]
+    [domain, length, is_shorted, having_at_symbol, double_slash_redirecting, having_sub_domain, ssl_final_state, 1, -1, 1, 1, -1, 1, 0, -1, -1, 1, 1, 0, 1, 1, 1, 1, -1, -1, 0, -1, 1, 1, 1, -1]
     # Add more rows as needed
 ])
 

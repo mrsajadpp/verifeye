@@ -1,11 +1,24 @@
 # /usr/local/bin/python3.12 -m pip install
-from getdomain import get_domain
-from remhtttp import remove_protocol
+# from getdomain import get_domain
+# from remhtttp import remove_protocol
 import tldextract
 import requests
 import whois
-import pythonwhois
+# import pythonwhois
 from datetime import datetime
+from urllib.parse import urlparse
+
+def remove_protocol(url):
+    if url.startswith("https://"):
+        return url[len("https://"):]
+    elif url.startswith("http://"):
+        return url[len("http://"):]
+    else:
+        return url
+
+def get_domain(url):
+    parsed_url = urlparse(url)
+    return parsed_url.netloc
 
 
 def check_url_length(url):
@@ -14,10 +27,10 @@ def check_url_length(url):
         domain = get_domain(url)
 
         # Check if the URL length is greater than 54 characters
-        if len(url) > 54:
-            return 1  # Indicates URL length greater than 54
+        if len(domain) > 54:
+            return -1  # Indicates URL length greater than 54
         else:
-            return -1  # Indicates URL length less than or equal to 54
+            return 1  # Indicates URL length less than or equal to 54
     except:
         return 0  # Error or invalid URL
 
@@ -89,19 +102,19 @@ def check_ssl_final_state(url):
 
 # Coding loading .........................
 
-def check_domain_registration_length(url):
-    # try:
-        # Extract the domain from the URL
-        domain = get_domain(url)
+# def check_domain_registration_length(url):
+#     # try:
+#         # Extract the domain from the URL
+#         domain = get_domain(url)
 
-        print(domain)
+#         print(domain)
 
-        # Get WHOIS information for the domain
-        details = pythonwhois.get_whois(domain)
+#         # Get WHOIS information for the domain
+#         details = pythonwhois.get_whois(domain)
 
-        print(details)
+#         print(details)
 
-        return 1
+#         return 1
 
         # # Check if WHOIS information contains creation date
         # if 'creation_date' in domain_info:
@@ -124,10 +137,3 @@ def check_domain_registration_length(url):
         #     return 0  # WHOIS information does not contain creation date
     # except:
     #     return 0  # Error or invalid URL
-
-
-# Example usage:
-url = "https://thintry.com"
-result = check_domain_registration_length(url)
-
-print(f"The Domain_registeration_length feature for {url} is: {result}")

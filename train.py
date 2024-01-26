@@ -36,7 +36,7 @@ print(f"Trained model saved to {model_filename}")
 
 ypred = model.predict(Xtest)
 print(metrics.classification_report(ypred, ytest))
-print("\n\nAccuracy Score:", metrics.accuracy_score(ytest, ypred).round(2)*100, "%")
+# print("\n\nAccuracy Score:", metrics.accuracy_score(ytest, ypred).round(2)*100, "%")
 
 # Identify
 
@@ -54,4 +54,4 @@ predictions = reg.predict(Xtest)
 print(predictions)
 
 print(metrics.classification_report(predictions, ytest))
-print("\n\nAccuracy Score Loaded:", metrics.accuracy_score(ytest, predictions).round(2)*100, "%")
+# print("\n\nAccuracy Score Loaded:", metrics.accuracy_score(ytest, predictions).round(2)*100, "%")

@@ -2,13 +2,13 @@
 
 import socket
 import re
-from getdomain import get_domain
+# from getdomain import get_domain
 
 
 def check_having_IP_Address(url):
     try:
         # Extract the domain from the URL
-        domain = get_domain(url)
+        domain = url
 
         print(domain)
 
