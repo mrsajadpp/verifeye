@@ -292,3 +292,42 @@ def check_submitting_to_email(url):
         # Handle any exceptions that may occur during the request
         print(f"An error occurred: {e}")
         return 0  # Return 0 to indicate that Submitting_to_email is not applicable or an error occurred
+    
+
+def check_redirect(url):
+    try:
+        # Send an HTTP GET request to the URL with allow_redirects=False to prevent automatic redirection
+        response = requests.get(url, allow_redirects=False, timeout=5)
+
+        # Check if the response status code indicates a redirect (3xx status code)
+        if 300 <= response.status_code < 400:
+            return 1  # Return -1 if the URL redirects
+        else:
+            return -1  # Return 0 if the URL does not redirect
+    except requests.RequestException as e:
+        # Handle any exceptions that may occur during the request
+        print(f"An error occurred: {e}")
+        return 0  # Return 1 if the URL is not applicable (e.g., invalid URL or request error)
+
+
+def check_iframe(url):
+    try:
+        # Send an HTTP GET request to the URL to retrieve its content
+        response = requests.get(url, timeout=5)
+
+        # Parse the HTML content of the web page using BeautifulSoup
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # Find all iframe elements in the parsed HTML
+        iframe_elements = soup.find_all('iframe')
+
+
+        # Check if any iframe elements were found
+        if iframe_elements:
+            return 1  # Return -1 if the website contains an iframe
+        else:
+            return -1  # Return 0 if the website does not contain an iframe
+    except requests.RequestException as e:
+        # Handle any exceptions that may occur during the request
+        print(f"An error occurred: {e}")
+        return 0  # Return 1 if the URL is not applicable (e.g., invalid URL or request error)
