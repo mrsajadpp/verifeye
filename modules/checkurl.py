@@ -4,8 +4,7 @@
 import tldextract
 import requests
 import whois
-# import pythonwhois
-from datetime import datetime
+import datetime
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 
@@ -127,7 +126,7 @@ def check_ssl_final_state(url):
         #     # Calculate the registration length in days
         #     if isinstance(creation_date, list):
         #         creation_date = creation_date[0]
-        #     registration_length = (creation_date - datetime.now()).days
+        #     registration_length = (creation_date - datetime.datetime.now()).days
 
         #     print(registration_length)
 
@@ -245,6 +244,7 @@ def check_links_in_tags(url):
         print(f"An error occurred: {e}")
         return -1  # Return -1 to indicate an error
 
+
 def check_sfh(url):
     try:
         # Send an HTTP GET request to the URL to retrieve its content
@@ -268,7 +268,8 @@ def check_sfh(url):
         # Handle any exceptions that may occur during the request
         print(f"An error occurred: {e}")
         return 0  # Return 0 to indicate that SFH is not applicable or an error occurred
-    
+
+
 def check_submitting_to_email(url):
     try:
         # Send an HTTP GET request to the URL to retrieve its content
@@ -291,8 +292,8 @@ def check_submitting_to_email(url):
     except requests.RequestException as e:
         # Handle any exceptions that may occur during the request
         print(f"An error occurred: {e}")
-        return 0  # Return 0 to indicate that Submitting_to_email is not applicable or an error occurred
-    
+        return -1  # Return 0 to indicate that Submitting_to_email is not applicable or an error occurred
+
 
 def check_redirect(url):
     try:
@@ -307,7 +308,8 @@ def check_redirect(url):
     except requests.RequestException as e:
         # Handle any exceptions that may occur during the request
         print(f"An error occurred: {e}")
-        return 0  # Return 1 if the URL is not applicable (e.g., invalid URL or request error)
+        # Return 1 if the URL is not applicable (e.g., invalid URL or request error)
+        return -1
 
 
 def check_iframe(url):
@@ -321,7 +323,6 @@ def check_iframe(url):
         # Find all iframe elements in the parsed HTML
         iframe_elements = soup.find_all('iframe')
 
-
         # Check if any iframe elements were found
         if iframe_elements:
             return 1  # Return -1 if the website contains an iframe
@@ -330,4 +331,143 @@ def check_iframe(url):
     except requests.RequestException as e:
         # Handle any exceptions that may occur during the request
         print(f"An error occurred: {e}")
-        return 0  # Return 1 if the URL is not applicable (e.g., invalid URL or request error)
+        # Return 1 if the URL is not applicable (e.g., invalid URL or request error)
+        return -1
+
+
+def check_google_index(url):
+    try:
+        # Send a request to the Google Custom Search JSON API to search for the website URL
+        response = requests.get(
+            f"https://www.googleapis.com/customsearch/v1?key=AIzaSyCb5-OKQQ1uMnJ7FEr-TtMNzAKdacVviME&cx=432e43142f9084620&q=site:{url}"
+        )
+
+        # Check if the website URL appears in the search results
+        if 'items' in response.json() and len(response.json()['items']) > 0:
+            return 1  # Return 1 if the website is indexed by Google
+        else:
+            return -1  # Return -1 if the website is not indexed by Google
+    except Exception as e:
+        # Handle any exceptions that may occur during the request
+        print(f"An error occurred: {e}")
+        return -1  # Return 0 if there was an error during the check
+
+
+def check_links_pointing_to_page(url):
+    try:
+        # Send an HTTP GET request to the URL to retrieve its content
+        response = requests.get(url, timeout=5)
+
+        # Parse the HTML content of the web page using BeautifulSoup
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # Find all anchor elements (<a>) with href attributes
+        anchor_elements = soup.find_all('a', href=True)
+
+        # # Initialize a counter for external links
+        # external_links_count = 0
+
+        # # Iterate through the anchor elements to count external links
+        # for anchor in anchor_elements:
+        #     # Parse the href attribute value to extract the domain of the link
+        #     parsed_href = urlparse(anchor['href'])
+        #     if parsed_href.netloc and parsed_href.netloc != urlparse(url).netloc:
+        #         # Increment the counter if the link points to an external domain
+        #         external_links_count += 1
+
+        # Return the number of external links pointing to the page
+        if(len(anchor_elements)):
+            # print(1)
+            return 1
+        else:
+            return -1
+    except requests.RequestException as e:
+        # Handle any exceptions that may occur during the request
+        print(f"An error occurred: {e}")
+        return -1  # Return -1 to indicate an error occurred during the check
+
+
+def check_statistical_report(url):
+    try:
+        # Send an HTTP GET request to the URL to retrieve its content
+        response = requests.get(url, timeout=5)
+
+        # Parse the HTML content of the web page using BeautifulSoup
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # Define keywords related to statistical reports
+        statistical_keywords = ['statistical report',
+                                'statistics', 'data analysis']
+
+        # Search for the presence of keywords in the page content
+        for keyword in statistical_keywords:
+            if keyword in soup.get_text():
+                return 1  # Return 1 if a statistical report is found based on keywords
+
+        # If no keywords are found, return -1
+        return -1  # Return -1 to indicate no statistical report found
+    except requests.RequestException as e:
+        return -1  # Return 0 to indicate an error occurred during the check
+
+
+def check_domain_registration_length(url):
+    try:
+        domain = get_domain(url)
+        print(domain)
+        response = whois.whois(domain)
+        creation_date = response.creation_date
+        expiration_date = response.expiration_date
+        if creation_date and expiration_date:
+            registration_length = (expiration_date[0] - creation_date[0]).days
+            print(f"Domain registration length: {registration_length} days")
+            print(registration_length)
+            if registration_length >= 366:
+                return 1
+            else:
+                return -1
+        else:
+            print("Creation date or expiration date not found.")
+            return -1
+    except:
+        return -1
+
+
+def get_domain_age(url):
+    try:
+        domain = get_domain(url)
+        print(domain)
+        response = whois.whois(domain)
+        creation_date = response.creation_date
+        if creation_date:
+            print(datetime.datetime.now())
+            current_date = datetime.datetime.now()
+            print(current_date - creation_date[0])
+            domain_age = (current_date - creation_date[0]).days
+            print(f"Domain age: {domain_age} days")
+            return domain_age
+        else:
+            print("Creation date not found.")
+            return -1
+    except:
+        return -1
+
+import dns.resolver
+
+def check_dns_security(url):
+    try:
+        domain = get_domain(url)
+        # Query the DNS records for the domain
+        answers = dns.resolver.resolve(domain, 'DNSKEY', raise_on_no_answer=False)
+        
+        # Check if DNS records are secure
+        if answers:
+            print(f"DNS records for {domain} are secure.")
+            return 1
+        else:
+            print(f"DNS records for {domain} are not secure.")
+            return -1
+    except dns.resolver.NXDOMAIN:
+        print(f"The domain {domain} does not exist.")
+        return -1
+    except:
+        return -1

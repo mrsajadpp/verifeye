@@ -14,6 +14,7 @@ def check_having_IP_Address(url):
 
         # Get the IP address of the domain
         ip_address = socket.gethostbyname(domain)
+        print(ip_address)
 
         # Check if the IP address is present in the URL
         if ip_address:

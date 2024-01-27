@@ -2,7 +2,7 @@
 import numpy as np
 import joblib
 from modules.ipcheck import check_having_IP_Address
-from modules.checkurl import check_url_length, check_shortening_service, check_having_at_symbol, check_double_slash_redirecting, check_having_sub_domain, check_ssl_final_state, check_https_token_with_request, check_request_url, check_links_in_tags, check_url_of_anchor, check_sfh, check_submitting_to_email, check_redirect, check_iframe
+from modules.checkurl import check_url_length, check_shortening_service, check_having_at_symbol, check_double_slash_redirecting, check_having_sub_domain, check_ssl_final_state, check_https_token_with_request, check_request_url, check_links_in_tags, check_url_of_anchor, check_sfh, check_submitting_to_email, check_redirect, check_iframe, check_google_index, check_links_pointing_to_page, check_statistical_report, check_domain_registration_length, get_domain_age, check_dns_security
 from urllib.parse import urlparse
 
 # Load the trained model
@@ -13,28 +13,70 @@ def get_domain(url):
     parsed_url = urlparse(url)
     return parsed_url.netloc
 
-url = 'https://sbi.co.in/'
-domain = check_having_IP_Address(get_domain(url))
-length = check_url_length(url)
+url = 'http://myphoneoffer.com/'
+# having_ip = check_having_IP_Address(get_domain(url))
+# url_length = check_url_length(url)
+# is_shorted = check_shortening_service(url)
+# having_at_symbol = check_having_at_symbol(url)
+# double_slash_redirecting = check_double_slash_redirecting(url)
+# having_sub_domain = check_having_sub_domain(url)
+# ssl_final_state = check_ssl_final_state(url)
+# https_token = check_https_token_with_request(url)
+# request_url = check_request_url(url)
+# url_anchor = check_url_of_anchor(url)
+# links_in_tag = check_links_in_tags(url)
+# sfh = check_sfh(url)
+# submitting_email = check_submitting_to_email(url)
+# is_redirect = check_redirect(url)
+# is_containe_iframe = check_iframe(url)
+# google_index = check_google_index(url)
+# links_pointing = check_links_pointing_to_page(url)
+# static_repo = check_statistical_report(url)
+
+# # Prepare input data for prediction (exclude the "Index" column)
+# new_data_values = np.array([
+#     [having_ip, url_length, is_shorted, having_at_symbol, double_slash_redirecting, having_sub_domain, ssl_final_state, 1, -1, 1, https_token, request_url, url_anchor, links_in_tag, sfh, submitting_email, 1, is_redirect, 0, 1, 1, is_containe_iframe, 1, -1, -1, 0, google_index, links_pointing, static_repo, 1, -1]
+#     # Add more rows as needed
+# ])
+
+having_ip = check_having_IP_Address(get_domain(url))
+url_length = check_url_length(url)
 is_shorted = check_shortening_service(url)
 having_at_symbol = check_having_at_symbol(url)
 double_slash_redirecting = check_double_slash_redirecting(url)
 having_sub_domain = check_having_sub_domain(url)
 ssl_final_state = check_ssl_final_state(url)
+domain_registration_length = check_domain_registration_length(url)
+favicon = -1
+port = -1
 https_token = check_https_token_with_request(url)
 request_url = check_request_url(url)
-url_anchor = check_url_of_anchor(url)
-links_in_tag = check_links_in_tags(url)
+url_of_anchor = check_url_of_anchor(url)
+links_in_tags = check_links_in_tags(url)
 sfh = check_sfh(url)
-submitting_email = check_submitting_to_email(url)
-is_redirect = check_redirect(url)
-is_containe_iframe = check_iframe(url)
+submitting_to_email = check_submitting_to_email(url)
+abnormal_url = -1
+redirect = check_redirect(url)
+on_mouseover = -1
+right_click = -1
+popup_window = -1
+iframe = check_iframe(url)
+age_of_domain = get_domain_age(url)
+dns_record = check_dns_security(url)
+web_traffic = -1
+page_rank = -1
+google_index = check_google_index(url)
+links_pointing_to_page = check_links_pointing_to_page(url)
+statistical_report = check_statistical_report(url)
 
-# Prepare input data for prediction (exclude the "Index" column)
+print(links_pointing_to_page)
+
+print([having_ip, url_length, is_shorted, having_at_symbol, double_slash_redirecting, having_sub_domain, ssl_final_state, domain_registration_length, favicon, port, https_token, request_url, url_of_anchor, links_in_tags, sfh, submitting_to_email, abnormal_url, redirect, on_mouseover, right_click, popup_window, iframe, age_of_domain, dns_record, web_traffic, page_rank, google_index, links_pointing_to_page, statistical_report, 1, -1])
+
 new_data_values = np.array([
-    [domain, length, is_shorted, having_at_symbol, double_slash_redirecting, having_sub_domain, ssl_final_state, 1, -1, 1, https_token, request_url, url_anchor, links_in_tag, sfh, submitting_email, 1, is_redirect, 0, 1, 1, is_containe_iframe, 1, -1, -1, 0, -1, 1, 1, 1, -1]
-    # Add more rows as needed
+    [having_ip, url_length, is_shorted, having_at_symbol, double_slash_redirecting, having_sub_domain, ssl_final_state, domain_registration_length, favicon, port, https_token, request_url, url_of_anchor, links_in_tags, sfh, submitting_to_email, abnormal_url, redirect, on_mouseover, right_click, popup_window, iframe, age_of_domain, dns_record, web_traffic, page_rank, google_index, links_pointing_to_page, statistical_report, 1, -1]
 ])
+
 
 # having_IP_Address  { -1,1 }
 # URL_Length   { 1,0,-1 }
