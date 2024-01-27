@@ -202,4 +202,69 @@ def check_url_of_anchor(url):
     except:
         return 0
 
-print(check_url_of_anchor('https://example.com/'))
+
+def check_links_in_tags(url):
+    try:
+        # Send an HTTP GET request to the URL to retrieve its content
+        response = requests.get(url, timeout=5)
+
+        # Parse the HTML content of the web page using BeautifulSoup
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # Find all relevant HTML tags that may contain links
+        relevant_tags = ['a', 'img', 'link', 'script']
+
+        # Initialize a counter for the number of links found
+        links_count = 0
+
+        # Iterate over each relevant tag to count the number of links
+        for tag_name in relevant_tags:
+            tags = soup.find_all(tag_name)
+            for tag in tags:
+                # For 'a' tags, check the 'href' attribute
+                if tag_name == 'a':
+                    if tag.get('href'):
+                        links_count += 1
+                # For 'img' tags, check the 'src' attribute
+                elif tag_name == 'img':
+                    if tag.get('src'):
+                        links_count += 1
+                # For 'link' tags, check the 'href' attribute
+                elif tag_name == 'link':
+                    if tag.get('href'):
+                        links_count += 1
+                # For 'script' tags, check the 'src' attribute
+                elif tag_name == 'script':
+                    if tag.get('src'):
+                        links_count += 1
+
+        # Return the total number of links found within relevant tags
+        return links_count
+    except requests.RequestException as e:
+        # Handle any exceptions that may occur during the request
+        print(f"An error occurred: {e}")
+        return -1  # Return -1 to indicate an error
+
+def check_sfh(url):
+    try:
+        # Send an HTTP GET request to the URL to retrieve its content
+        response = requests.get(url, timeout=5)
+
+        # Parse the HTML content of the web page using BeautifulSoup
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # Find all form elements in the parsed HTML
+        form_elements = soup.find_all('form')
+
+        # Check if any form element has an action attribute pointing to an external URL
+        for form in form_elements:
+            action = form.get('action')
+            if action and ('http://' in action.lower() or 'https://' in action.lower()):
+                return -1  # Return -1 if an external URL is found in the form action
+
+        # If no form elements have an action attribute pointing to an external URL, return 1
+        return 1
+    except requests.RequestException as e:
+        # Handle any exceptions that may occur during the request
+        print(f"An error occurred: {e}")
+        return 0  # Return 0 to indicate that SFH is not applicable or an error occurred
