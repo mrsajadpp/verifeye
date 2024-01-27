@@ -147,7 +147,6 @@ def check_https_token_with_request(url):
 
         # Check if the response URL contains the HTTPS token
         starts = response.url.startswith("https://")
-        print(response.url)
         if (starts):
             return 1
         else:
@@ -413,7 +412,6 @@ def check_statistical_report(url):
 def check_domain_registration_length(url):
     try:
         domain = get_domain(url)
-        print(domain)
         response = whois.whois(domain)
         creation_date = response.creation_date
         expiration_date = response.expiration_date

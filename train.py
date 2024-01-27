@@ -16,8 +16,6 @@ df = pd.read_csv('data/dataset.csv')
 dot_file = './tree.dot'
 confusion_matrix_file = './confusion_matrix.png'
 
-print(df.head())
-
 # Train
 
 X = df.iloc[:, :-1]

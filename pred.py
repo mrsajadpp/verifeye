@@ -69,7 +69,6 @@ google_index = check_google_index(url)
 links_pointing_to_page = check_links_pointing_to_page(url)
 statistical_report = check_statistical_report(url)
 
-print(links_pointing_to_page)
 
 print([having_ip, url_length, is_shorted, having_at_symbol, double_slash_redirecting, having_sub_domain, ssl_final_state, domain_registration_length, favicon, port, https_token, request_url, url_of_anchor, links_in_tags, sfh, submitting_to_email, abnormal_url, redirect, on_mouseover, right_click, popup_window, iframe, age_of_domain, dns_record, web_traffic, page_rank, google_index, links_pointing_to_page, statistical_report, 1, -1])
 
