@@ -268,3 +268,27 @@ def check_sfh(url):
         # Handle any exceptions that may occur during the request
         print(f"An error occurred: {e}")
         return 0  # Return 0 to indicate that SFH is not applicable or an error occurred
+    
+def check_submitting_to_email(url):
+    try:
+        # Send an HTTP GET request to the URL to retrieve its content
+        response = requests.get(url, timeout=5)
+
+        # Parse the HTML content of the web page using BeautifulSoup
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # Find all form elements in the parsed HTML
+        form_elements = soup.find_all('form')
+
+        # Check if any form element contains an input field for email submission
+        for form in form_elements:
+            email_inputs = form.find_all('input', {'type': 'email'})
+            if email_inputs:
+                return 1  # Return -1 if an input field for email submission is found
+
+        # If no form elements contain an input field for email submission, return 1
+        return -1
+    except requests.RequestException as e:
+        # Handle any exceptions that may occur during the request
+        print(f"An error occurred: {e}")
+        return 0  # Return 0 to indicate that Submitting_to_email is not applicable or an error occurred
