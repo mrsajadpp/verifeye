@@ -137,3 +137,37 @@ def check_ssl_final_state(url):
         #     return 0  # WHOIS information does not contain creation date
     # except:
     #     return 0  # Error or invalid URL
+
+def check_https_token_with_request(url):
+    try:
+        # Send an HTTP GET request to the URL
+        response = requests.get(url, timeout=5)
+        
+        # Check if the response URL contains the HTTPS token
+        starts = response.url.startswith("https://")
+        print(response.url)
+        if(starts):
+            return 1
+        else:
+            return -1
+
+    except:
+        return 0
+
+def check_request_url(url):
+    try:
+        # Send an HTTP HEAD request to the URL to check its headers
+        response = requests.head(url, timeout=5)
+
+        # Check if the response status code indicates success (2xx)
+        if response.status_code // 100 == 2:
+            # Add your custom criteria for a valid request URL here
+            # For example, check if the server responds with a valid content type
+            # valid_content_types = ['text/html', 'application/json']
+            # content_type = response.headers.get('content-type')
+            return 1
+        else:
+            # Handle non-success status codes if needed
+            return -1
+    except:
+        return 0
