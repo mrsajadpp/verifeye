@@ -415,6 +415,8 @@ def check_domain_registration_length(url):
         response = whois.whois(domain)
         creation_date = response.creation_date
         expiration_date = response.expiration_date
+        print(creation_date)
+        print(expiration_date)
         if creation_date and expiration_date:
             registration_length = (expiration_date[0] - creation_date[0]).days
             print(f"Domain registration length: {registration_length} days")
