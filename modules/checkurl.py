@@ -7,6 +7,8 @@ import whois
 # import pythonwhois
 from datetime import datetime
 from urllib.parse import urlparse
+from bs4 import BeautifulSoup
+
 
 def remove_protocol(url):
     if url.startswith("https://"):
@@ -15,6 +17,7 @@ def remove_protocol(url):
         return url[len("http://"):]
     else:
         return url
+
 
 def get_domain(url):
     parsed_url = urlparse(url)
@@ -142,17 +145,18 @@ def check_https_token_with_request(url):
     try:
         # Send an HTTP GET request to the URL
         response = requests.get(url, timeout=5)
-        
+
         # Check if the response URL contains the HTTPS token
         starts = response.url.startswith("https://")
         print(response.url)
-        if(starts):
+        if (starts):
             return 1
         else:
             return -1
 
     except:
         return 0
+
 
 def check_request_url(url):
     try:
@@ -171,3 +175,31 @@ def check_request_url(url):
             return -1
     except:
         return 0
+
+
+def check_url_of_anchor(url):
+    try:
+        # Send an HTTP GET request to the URL to retrieve its content
+        response = requests.get(url, timeout=5)
+
+        # Parse the HTML content of the web page using BeautifulSoup
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # Find all anchor tags (hyperlinks) in the parsed HTML
+        anchor_tags = soup.find_all('a')
+
+        # Check each anchor tag for suspicious attributes or patterns
+        for tag in anchor_tags:
+            href = tag.get('href')
+            if href:
+                # Add your custom checks for the URL_of_Anchor feature here
+                # For example, check if the href attribute contains suspicious patterns
+                if 'javascript:' in href or 'data:' in href:
+                    return -1  # Return False if a suspicious pattern is found
+
+        # If no suspicious patterns are found in any anchor tags, return True
+        return 1
+    except:
+        return 0
+
+print(check_url_of_anchor('https://example.com/'))
