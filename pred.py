@@ -13,7 +13,7 @@ def get_domain(url):
     parsed_url = urlparse(url)
     return parsed_url.netloc
 
-url = 'https://canarabank.com/'
+url = 'https://sbi.co.in/'
 domain = check_having_IP_Address(get_domain(url))
 length = check_url_length(url)
 is_shorted = check_shortening_service(url)
