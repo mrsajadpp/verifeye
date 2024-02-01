@@ -4,6 +4,7 @@ import joblib
 from modules.ipcheck import check_having_IP_Address
 from modules.checkurl import check_url_length, check_shortening_service, check_having_at_symbol, check_double_slash_redirecting, check_having_sub_domain, check_ssl_final_state, check_https_token_with_request, check_request_url, check_links_in_tags, check_url_of_anchor, check_sfh, check_submitting_to_email, check_redirect, check_iframe, check_google_index, check_links_pointing_to_page, check_statistical_report, check_domain_registration_length, get_domain_age, check_dns_security
 from urllib.parse import urlparse
+from colorama import Fore, Back, Style
 
 # Load the trained model
 model_filename = 'model/trained_model.joblib'
@@ -13,7 +14,8 @@ def get_domain(url):
     parsed_url = urlparse(url)
     return parsed_url.netloc
 
-url = 'http://myphoneoffer.com/'
+url = 'https://thintry.com/'
+# url_two = 'https://myphoneoffer.com/'
 # having_ip = check_having_IP_Address(get_domain(url))
 # url_length = check_url_length(url)
 # is_shorted = check_shortening_service(url)
@@ -69,12 +71,10 @@ google_index = check_google_index(url)
 links_pointing_to_page = check_links_pointing_to_page(url)
 statistical_report = check_statistical_report(url)
 
-print(domain_registration_length)
-
-print([having_ip, url_length, is_shorted, having_at_symbol, double_slash_redirecting, having_sub_domain, ssl_final_state, domain_registration_length, favicon, port, https_token, request_url, url_of_anchor, links_in_tags, sfh, submitting_to_email, abnormal_url, redirect, on_mouseover, right_click, popup_window, iframe, age_of_domain, dns_record, web_traffic, page_rank, google_index, links_pointing_to_page, statistical_report, 1, -1])
+# print([having_ip, url_length, is_shorted, having_at_symbol, double_slash_redirecting, having_sub_domain, ssl_final_state, domain_registration_length, favicon, port, https_token, request_url, url_of_anchor, links_in_tags, sfh, submitting_to_email, abnormal_url, redirect, on_mouseover, right_click, popup_window, iframe, age_of_domain, dns_record, web_traffic, page_rank, google_index, links_pointing_to_page, statistical_report])
 
 new_data_values = np.array([
-    [having_ip, url_length, is_shorted, having_at_symbol, double_slash_redirecting, having_sub_domain, ssl_final_state, domain_registration_length, favicon, port, https_token, request_url, url_of_anchor, links_in_tags, sfh, submitting_to_email, abnormal_url, redirect, on_mouseover, right_click, popup_window, iframe, age_of_domain, dns_record, web_traffic, page_rank, google_index, links_pointing_to_page, statistical_report, 0, 0]
+    [having_ip, url_length, is_shorted, having_at_symbol, double_slash_redirecting, having_sub_domain, ssl_final_state, domain_registration_length, favicon, port, https_token, request_url, url_of_anchor, links_in_tags, sfh, submitting_to_email, abnormal_url, redirect, on_mouseover, right_click, popup_window, iframe, age_of_domain, dns_record, web_traffic, page_rank, google_index, links_pointing_to_page, statistical_report]
 ])
 
 
@@ -113,9 +113,11 @@ new_data_values = np.array([
 predictions = model.predict(new_data_values)
 
 # Display predictions
-print("Predictions:", predictions)
+print(Fore.YELLOW + "Predictions:", predictions)
 
 if  predictions[0] == 1:
-    print("Trustfull Website.")
+    print(Fore.GREEN + "Trustfull Website.")
 else:
-    print("Untrustfull Website.")
+    print(Fore.RED + "Untrustfull Website.")
+
+print(Style.RESET_ALL)
