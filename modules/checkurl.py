@@ -439,7 +439,10 @@ def get_domain_age(url):
             current_date = datetime.datetime.now()
             domain_age = (current_date - creation_date[0]).days
             print(f"Domain age: {domain_age} days")
-            return domain_age
+            if (domain_age >= 230):
+                return 1
+            else:
+                return -1
         else:
             print("Creation date not found.")
             return -1
