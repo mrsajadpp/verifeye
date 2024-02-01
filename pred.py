@@ -109,6 +109,9 @@ new_data_values = np.array([
 # Links_pointing_to_page { 1,0,-1 }
 # Statistical_report { -1,1 }
 
+print(Fore.BLUE + f"Checking : {url}")
+print(Style.RESET_ALL)
+
 # Make predictions
 predictions = model.predict(new_data_values)
 
