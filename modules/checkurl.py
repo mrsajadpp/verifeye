@@ -7,6 +7,7 @@ import whois
 import datetime
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
+import re  
 
 
 def remove_protocol(url):
@@ -515,3 +516,19 @@ def check_favicon(url):
         # Handle other request exceptions
         print(f"An error occurred: {e}")
         return 0  # Return 0 for other request exceptions
+
+def has_default_port(url):
+    try:
+        # Parse the URL
+        parsed_url = urlparse(url)
+
+        # Check if the port is the default for the scheme (HTTP or HTTPS)
+        if parsed_url.scheme == 'http' and (parsed_url.port is None or parsed_url.port == 80):
+            return 1  # HTTP default port
+        elif parsed_url.scheme == 'https' and (parsed_url.port is None or parsed_url.port == 443):
+            return 1  # HTTPS default port
+        else:
+            return -1  # Not using default port
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return 0  # Return 0 for any error

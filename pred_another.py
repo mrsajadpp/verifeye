@@ -2,7 +2,7 @@
 import numpy as np
 import joblib
 from modules.ipcheck import check_having_IP_Address
-from modules.checkurl import check_url_length, check_shortening_service, check_having_at_symbol, check_double_slash_redirecting, check_having_sub_domain, check_ssl_final_state, check_https_token_with_request, check_request_url, check_links_in_tags, check_url_of_anchor, check_sfh, check_submitting_to_email, check_redirect, check_iframe, check_google_index, check_links_pointing_to_page, check_statistical_report, check_domain_registration_length, get_domain_age, check_dns_security, check_favicon
+from modules.checkurl import check_url_length, check_shortening_service, check_having_at_symbol, check_double_slash_redirecting, check_having_sub_domain, check_ssl_final_state, check_https_token_with_request, check_request_url, check_links_in_tags, check_url_of_anchor, check_sfh, check_submitting_to_email, check_redirect, check_iframe, check_google_index, check_links_pointing_to_page, check_statistical_report, check_domain_registration_length, get_domain_age, check_dns_security, check_favicon, has_default_port
 from urllib.parse import urlparse
 from colorama import Fore, Back, Style
 
@@ -50,7 +50,7 @@ having_sub_domain = check_having_sub_domain(url)
 ssl_final_state = check_ssl_final_state(url)
 domain_registration_length = check_domain_registration_length(url)
 favicon = check_favicon(url)
-port = 0
+port = has_default_port(url)
 https_token = check_https_token_with_request(url)
 request_url = check_request_url(url)
 url_of_anchor = check_url_of_anchor(url)
