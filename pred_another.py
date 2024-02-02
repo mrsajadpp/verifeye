@@ -2,13 +2,13 @@
 import numpy as np
 import joblib
 from modules.ipcheck import check_having_IP_Address
-from modules.checkurl import check_url_length, check_shortening_service, check_having_at_symbol, check_double_slash_redirecting, check_having_sub_domain, check_ssl_final_state, check_https_token_with_request, check_request_url, check_links_in_tags, check_url_of_anchor, check_sfh, check_submitting_to_email, check_redirect, check_iframe, check_google_index, check_links_pointing_to_page, check_statistical_report, check_domain_registration_length, get_domain_age, check_dns_security
+from modules.checkurl import check_url_length, check_shortening_service, check_having_at_symbol, check_double_slash_redirecting, check_having_sub_domain, check_ssl_final_state, check_https_token_with_request, check_request_url, check_links_in_tags, check_url_of_anchor, check_sfh, check_submitting_to_email, check_redirect, check_iframe, check_google_index, check_links_pointing_to_page, check_statistical_report, check_domain_registration_length, get_domain_age, check_dns_security, check_favicon
 from urllib.parse import urlparse
 from colorama import Fore, Back, Style
 
 # Load the trained model
 model_filename = 'model/trained_model.joblib'
-model = joblib.load(model_filename)
+model = joblib.load(model_filename) 
 
 def get_domain(url):
     parsed_url = urlparse(url)
@@ -49,24 +49,24 @@ double_slash_redirecting = check_double_slash_redirecting(url)
 having_sub_domain = check_having_sub_domain(url)
 ssl_final_state = check_ssl_final_state(url)
 domain_registration_length = check_domain_registration_length(url)
-favicon = -1
-port = -1
+favicon = check_favicon(url)
+port = 0
 https_token = check_https_token_with_request(url)
 request_url = check_request_url(url)
 url_of_anchor = check_url_of_anchor(url)
 links_in_tags = check_links_in_tags(url)
 sfh = check_sfh(url)
 submitting_to_email = check_submitting_to_email(url)
-abnormal_url = -1
+abnormal_url = 0
 redirect = check_redirect(url)
-on_mouseover = -1
-right_click = -1
-popup_window = -1
+on_mouseover = 0
+right_click = 0
+popup_window = 0
 iframe = check_iframe(url)
 age_of_domain = get_domain_age(url)
 dns_record = check_dns_security(url)
-web_traffic = -1
-page_rank = -1
+web_traffic = 0
+page_rank = 0
 google_index = check_google_index(url)
 links_pointing_to_page = check_links_pointing_to_page(url)
 statistical_report = check_statistical_report(url)

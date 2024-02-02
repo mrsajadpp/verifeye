@@ -469,3 +469,49 @@ def check_dns_security(url):
         return -1
     except:
         return -1
+
+
+def check_favicon(url):
+    try:
+        # Send an HTTP GET request to the URL to retrieve its content
+        response = requests.get(url, timeout=10)  # Increased timeout to 10 seconds
+
+        # Raise an exception for HTTP errors (e.g., 404 Not Found)
+        response.raise_for_status()
+
+        # Parse the HTML content of the web page using BeautifulSoup
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # Find all anchor tags (hyperlinks) in the parsed HTML
+        link_tags = soup.find_all('link')
+
+        # Fav Icon Link
+        fav_link = 'false'
+
+        # Check each anchor tag for the 'icon' rel attribute
+        for tag in link_tags:
+            rel = tag.get('rel')
+            if rel and 'icon' in rel:
+                href = tag.get('href')
+                if href:
+                    fav_link = href
+                    return 1  # Return 1 if a suspicious pattern is found
+                else:
+                    fav_link = 'false'
+                    return -1  # Return -1 if no suspicious pattern is found
+
+        # If no 'icon' rel attribute is found in any link tag
+        if(fav_link.startswith("./") or fav_link.startswith("/") or fav_link.startswith(url)):
+            return 1
+        else:
+            return -1
+
+    except requests.exceptions.Timeout:
+        # Handle timeout errors separately
+        print("The request timed out")
+        return 0  # Return 0 for timeout errors
+
+    except requests.exceptions.RequestException as e:
+        # Handle other request exceptions
+        print(f"An error occurred: {e}")
+        return 0  # Return 0 for other request exceptions
